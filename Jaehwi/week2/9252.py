@@ -1,3 +1,4 @@
+'''
 import sys
 
 input = sys.stdin.readline
@@ -42,3 +43,30 @@ for string in dp:
 
 print(len(maximum))
 print(maximum)
+
+O(N^3) 시간 초과 -> 이문제의 경우 최대 O(N^2logN)안에서 끝내야 함.
+'''
+
+
+import sys
+
+input = sys.stdin.readline
+
+seq_1 = input().rstrip()
+seq_2 = input().rstrip()
+
+table = [['' for _ in range(len(seq_1)+1)] for _ in range(len(seq_2)+1)]
+
+for row in range(1, len(seq_2)+1):
+    for column in range(1, len(seq_1)+1):
+        if seq_2[row-1] == seq_1[column-1]:
+            table[row][column] = table[row-1][column-1] + seq_2[row-1]
+        else:
+            if len(table[row][column-1]) >= len(table[row-1][column]):
+                table[row][column] = table[row][column-1]
+            else:
+                table[row][column] = table[row-1][column]
+
+value = table[-1][-1]
+print(len(value))
+print(value)
